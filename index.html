@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&amp;family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  html{scroll-behavior:smooth;}
+  body{margin:0;}
+  @keyframes ns-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+  @keyframes ns-drift{from{transform:translate(0,0) scale(1)}to{transform:translate(28px,18px) scale(1.05)}}
+  @keyframes ns-fadeup{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes ns-fadedown{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:translateY(0)}}
+  ::placeholder{color:rgba(255,255,255,0.3);}
+</style>
+</helmet>
+<div style="position:relative;background:#050d12;color:#fff;font-family:'Hanken Grotesk',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden;">
+
+  <!-- background scene -->
+
+  <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 80% 60% at 20% 10%,#0d3b3e 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 80% 80%,#0a2a1a 0%,transparent 55%),radial-gradient(ellipse 40% 40% at 50% 50%,#071520 0%,transparent 70%),#050d12;"></div>
+  <div style="position:fixed;width:480px;height:480px;border-radius:50%;filter:blur(80px);opacity:.32;background:#0e4a3a;top:-120px;left:-120px;z-index:0;pointer-events:none;animation:ns-drift 12s ease-in-out infinite alternate;"></div>
+  <div style="position:fixed;width:380px;height:380px;border-radius:50%;filter:blur(80px);opacity:.3;background:#1a3a0e;top:42%;right:-90px;z-index:0;pointer-events:none;animation:ns-drift 12s ease-in-out -4s infinite alternate;"></div>
+  <div style="position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.04;background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);background-size:60px 60px;"></div>
+
+  <!-- natural grass field along the bottom -->
+  <div style="position:fixed;left:0;right:0;bottom:0;z-index:0;height:340px;pointer-events:none;background:url('grass.svg') center bottom / cover no-repeat;opacity:0.7;-webkit-mask-image:linear-gradient(to top,#000 50%,transparent);mask-image:linear-gradient(to top,#000 50%,transparent);"></div>
+
+  <!-- toast -->
+  <div ref="{{ toastRef }}" style="position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(11,42,46,0.96);border:1px solid rgba(201,168,76,0.3);border-radius:100px;padding:13px 28px;font-size:14px;color:#e8c97a;backdrop-filter:blur(24px);z-index:999;transition:transform .4s cubic-bezier(.22,1,.36,1),opacity .4s;opacity:0;"></div>
+
+  <!-- golf-ball scroll indicator -->
+  <div style="position:fixed;top:0;right:14px;bottom:0;width:30px;z-index:200;pointer-events:none;">
+    <div style="position:absolute;left:50%;top:70px;bottom:80px;width:0;border-left:2px dashed rgba(255,255,255,0.16);transform:translateX(-50%);"></div>
+    <div style="position:absolute;left:50%;bottom:54px;transform:translateX(-50%);width:24px;height:9px;border-radius:50%;background:radial-gradient(ellipse at 50% 35%,#03110a,#020a06);border:1px solid rgba(201,168,76,0.5);box-shadow:0 1px 4px rgba(0,0,0,0.5);"></div>
+    <div style="position:absolute;left:50%;bottom:58px;transform:translateX(-50%);width:2px;height:48px;background:linear-gradient(#e8c97a,#8a6420);border-radius:2px;"></div>
+    <div style="position:absolute;left:50%;bottom:98px;margin-left:1px;width:0;height:0;border-left:16px solid #c9a84c;border-top:7px solid transparent;border-bottom:7px solid transparent;"></div>
+    <div ref="{{ ballRef }}" style="position:absolute;left:50%;top:70px;width:22px;height:22px;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(rgba(0,0,0,0.10) 1.1px,transparent 1.7px) 0 0/5px 5px,radial-gradient(circle at 36% 30%,#ffffff,#e4e4e4 60%,#bcbcbc 100%);box-shadow:0 2px 7px rgba(0,0,0,0.45),inset -2px -2px 4px rgba(0,0,0,0.14);"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav style="position:sticky;top:0;z-index:100;padding:20px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,13,18,0.72);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.08);">
+    <a href="#" style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;letter-spacing:0.10em;color:#fff;text-decoration:none;display:flex;align-items:center;gap:10px;">
+      <span style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#c9a84c,#8a6420);display:inline-flex;align-items:center;justify-content:center;font-size:14px;">⛳</span>
+      <span style="color:#57b07c;">Nova</span><span style="color:#c9a84c;">Swing</span>
+    </a>
+    <div style="display:flex;gap:26px;align-items:center;">
+      <a href="#testimonials" style="color:rgba(255,255,255,0.45);font-size:12px;letter-spacing:0.10em;text-transform:uppercase;text-decoration:none;">First Players</a>
+      <a href="#partnerships" style="color:rgba(255,255,255,0.45);font-size:12px;letter-spacing:0.10em;text-transform:uppercase;text-decoration:none;">Partnerships</a>
+      <a href="#join" style="color:rgba(255,255,255,0.45);font-size:12px;letter-spacing:0.10em;text-transform:uppercase;text-decoration:none;">Join the Team</a>
+      <a href="#waitlist" style="padding:10px 22px;border-radius:7px;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);color:#e8c97a;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;font-weight:500;">Request Access</a>
+    </div>
+  </nav>
+
+  <main style="position:relative;z-index:1;">
+
+    <!-- HERO -->
+    <section data-screen-label="Hero" style="min-height:calc(100vh - 71px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px 64px;">
+      <div style="display:inline-flex;align-items:center;gap:10px;padding:7px 18px;border-radius:100px;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.3);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#c9a84c;margin-bottom:32px;backdrop-filter:blur(12px);">
+        <span style="width:6px;height:6px;border-radius:50%;background:#c9a84c;animation:ns-pulse 2s ease-in-out infinite;"></span>Now accepting founding members
+      </div>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(52px,8vw,92px);line-height:1.0;letter-spacing:-0.01em;margin:0 0 18px;">
+        Your swing. Dissected.<br><em style="font-style:italic;background:linear-gradient(135deg,#e8c97a,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Perfected by AI.</em>
+      </h1>
+      <p style="font-size:clamp(16px,2vw,19px);color:rgba(255,255,255,0.55);line-height:1.65;max-width:540px;margin:14px auto 44px;">
+        India's first AI golf coaching platform. Upload your swing and see exactly what's costing you strokes — instantly. Built for Indian golfers, on the courses you actually play.
+      </p>
+
+      <!-- waitlist card -->
+      <div id="waitlist" style="width:100%;max-width:520px;background:rgba(255,255,255,0.04);backdrop-filter:blur(32px);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:36px;margin:0 auto;">
+        <sc-if value="{{ showForm }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:400;margin:0 0 6px;">Request Founding Access</h3>
+            <p style="font-size:13px;color:rgba(255,255,255,0.4);margin:0 0 24px;">{{ spotsLeft }} spots left in the first cohort. We review every application.</p>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <input ref="{{ nameRef }}" placeholder="Full name" style="width:100%;padding:14px 18px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:#fff;font-size:14px;font-family:'Hanken Grotesk',sans-serif;outline:none;box-sizing:border-box;">
+              <input ref="{{ emailRef }}" placeholder="Email address" style="width:100%;padding:14px 18px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:#fff;font-size:14px;font-family:'Hanken Grotesk',sans-serif;outline:none;box-sizing:border-box;">
+              <button onClick="{{ heroSubmit }}" style="width:100%;padding:16px;border-radius:10px;background:linear-gradient(135deg,#c9a84c,#8a6420);border:none;color:#fff;font-family:'Hanken Grotesk',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;margin-top:4px;">Apply for Access →</button>
+            </div>
+            <p style="font-size:11px;color:rgba(255,255,255,0.25);text-align:center;margin:14px 0 0;letter-spacing:0.04em;">Applications are reviewed. Not everyone gets in on the first round.</p>
+          </div>
+        </sc-if>
+        <sc-if value="{{ heroDone }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;padding:18px 0;animation:ns-fadeup .5s ease both;">
+            <div style="font-size:40px;margin-bottom:12px;">🏌️</div>
+            <h4 style="font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:400;margin:0 0 6px;color:#e8c97a;">Application received.</h4>
+            <p style="font-size:13px;color:rgba(255,255,255,0.4);margin:0;max-width:340px;margin:0 auto;line-height:1.6;">We review every request. If you're selected for the founding cohort, you'll hear from us within 48 hours.</p>
+          </div>
+        </sc-if>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <div style="padding:0 24px;margin-top:8px;">
+      <div data-reveal="" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;max-width:1100px;margin:0 auto;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;">
+        <div style="background:#071a22;padding:36px 24px;text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;line-height:1;color:#e8c97a;">2L+</div><div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:8px;letter-spacing:0.10em;text-transform:uppercase;">Active golfers in India</div></div>
+        <div style="background:#071a22;padding:36px 24px;text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;line-height:1;color:#e8c97a;">₹8,300 Cr</div><div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:8px;letter-spacing:0.10em;text-transform:uppercase;">India golf market size</div></div>
+        <div style="background:#071a22;padding:36px 24px;text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;line-height:1;color:#e8c97a;">25%</div><div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:8px;letter-spacing:0.10em;text-transform:uppercase;">YoY industry growth</div></div>
+      </div>
+    </div>
+
+    <!-- TESTIMONIALS — the anticipation centerpiece -->
+    <section id="testimonials" data-screen-label="First Players" style="padding:120px 24px 100px;">
+      <div style="max-width:1100px;margin:0 auto;">
+        <div data-reveal="" style="text-align:center;margin-bottom:64px;">
+          <p style="font-size:11px;letter-spacing:0.20em;text-transform:uppercase;color:#c9a84c;margin:0 0 16px;">From the closed beta</p>
+          <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,60px);font-weight:300;line-height:1.1;margin:0 0 18px;">The first players<br>already <em style="font-style:italic;color:#c9a84c;">know.</em></h2>
+          <p style="font-size:15px;color:rgba(255,255,255,0.5);line-height:1.7;max-width:520px;margin:0 auto;">We've put it in the hands of a small group of golfers across India. Here's what they keep telling us — while everyone else waits.</p>
+        </div>
+
+        <!-- featured pull-quote -->
+        <div data-reveal="" style="max-width:840px;margin:0 auto 48px;text-align:center;padding:48px 40px;border-radius:24px;background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.22);position:relative;">
+          <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#c9a84c,transparent);"></div>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3.2vw,34px);font-weight:300;font-style:italic;line-height:1.35;color:#fff;margin:0 0 28px;">"It told me in thirty seconds what two seasons of lessons never did. Now I check my phone for the next update like it's a scorecard."</p>
+          <div style="display:flex;align-items:center;justify-content:center;gap:14px;">
+            <div style="width:46px;height:46px;border-radius:50%;background-image:repeating-linear-gradient(135deg,rgba(201,168,76,0.25) 0 6px,rgba(201,168,76,0.10) 6px 12px);border:1px solid rgba(201,168,76,0.3);"></div>
+            <div style="text-align:left;">
+              <div style="font-size:14px;color:#fff;font-weight:500;">Kabir Rao</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:0.04em;">Bengaluru · handicap 16.2 → 11.8</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- testimonial grid -->
+        <div data-reveal="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;">
+          <div style="background:#071a22;padding:32px 28px;display:flex;flex-direction:column;gap:18px;">
+            <p style="font-size:15px;line-height:1.65;color:rgba(255,255,255,0.78);margin:0;">"I've waited years for something built for how we actually play here. The waitlist email alone made my week."</p>
+            <div style="display:flex;align-items:center;gap:12px;margin-top:auto;">
+              <div style="width:38px;height:38px;border-radius:50%;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,0.12) 0 6px,rgba(255,255,255,0.04) 6px 12px);"></div>
+              <div><div style="font-size:13px;color:#fff;">Aryan Mehta</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,0.4);">Delhi · 12.4 → 9.1</div></div>
+            </div>
+          </div>
+          <div style="background:#071a22;padding:32px 28px;display:flex;flex-direction:column;gap:18px;">
+            <p style="font-size:15px;line-height:1.65;color:rgba(255,255,255,0.78);margin:0;">"My fourball won't stop asking when they get access. I'm not sharing my invite with any of them."</p>
+            <div style="display:flex;align-items:center;gap:12px;margin-top:auto;">
+              <div style="width:38px;height:38px;border-radius:50%;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,0.12) 0 6px,rgba(255,255,255,0.04) 6px 12px);"></div>
+              <div><div style="font-size:13px;color:#fff;">Neha Sethi</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,0.4);">Mumbai · 20.1 → 15.6</div></div>
+            </div>
+          </div>
+          <div style="background:#071a22;padding:32px 28px;display:flex;flex-direction:column;gap:18px;">
+            <p style="font-size:15px;line-height:1.65;color:rgba(255,255,255,0.78);margin:0;">"Three rounds in and I'm striking it cleaner than I have in a decade. I'm counting the days until it's fully live."</p>
+            <div style="display:flex;align-items:center;gap:12px;margin-top:auto;">
+              <div style="width:38px;height:38px;border-radius:50%;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,0.12) 0 6px,rgba(255,255,255,0.04) 6px 12px);"></div>
+              <div><div style="font-size:13px;color:#fff;">Vikram Nair</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,0.4);">Chandigarh · 9.8 → 6.4</div></div>
+            </div>
+          </div>
+        </div>
+
+        <p data-reveal="" style="font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:300;font-style:italic;color:rgba(255,255,255,0.55);text-align:center;max-width:560px;margin:48px auto 0;line-height:1.7;">The cohort is small on purpose. <span style="color:#e8c97a;">Read the room — then get on the list before it closes.</span></p>
+      </div>
+    </section>
+
+    <!-- BE PART OF IT — referrals · partnerships · join -->
+    <section data-screen-label="Be part of it" style="padding:40px 24px 60px;">
+      <div style="max-width:1100px;margin:0 auto;">
+        <div data-reveal="" style="text-align:center;margin-bottom:52px;">
+          <p style="font-size:11px;letter-spacing:0.20em;text-transform:uppercase;color:#c9a84c;margin:0 0 16px;">Beyond the waitlist</p>
+          <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(34px,5vw,56px);font-weight:300;line-height:1.1;margin:0;">Be part of <em style="font-style:italic;color:#c9a84c;">building it.</em></h2>
+        </div>
+        <div data-reveal="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;">
+
+          <!-- Refer a golfer -->
+          <div style="background:#071a22;padding:38px 32px;display:flex;flex-direction:column;">
+            <div style="width:40px;height:40px;border-radius:11px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.28);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:22px;">⛳</div>
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;margin:0 0 10px;">Refer a golfer</h3>
+            <p style="font-size:14px;line-height:1.65;color:rgba(255,255,255,0.55);margin:0 0 26px;flex:1;">Know someone whose game deserves this? Send them in. Founding members move up the queue for every golfer they bring.</p>
+            <a href="#waitlist" style="align-self:flex-start;padding:12px 22px;border-radius:9px;border:1px solid rgba(255,255,255,0.16);color:#fff;font-size:13px;font-weight:500;letter-spacing:0.04em;text-decoration:none;">Refer &amp; move up →</a>
+          </div>
+
+          <!-- Partner with us -->
+          <div id="partnerships" style="background:#071a22;padding:38px 32px;display:flex;flex-direction:column;">
+            <div style="width:40px;height:40px;border-radius:11px;background:rgba(87,176,124,0.12);border:1px solid rgba(87,176,124,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:22px;">🤝</div>
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;margin:0 0 10px;">Partner with us</h3>
+            <p style="font-size:14px;line-height:1.65;color:rgba(255,255,255,0.55);margin:0 0 26px;flex:1;">Golf clubs, academies, driving ranges and brands — put Nova Swing in front of your members and grow the game together.</p>
+            <a href="mailto:partnerships@nova-swing.com" style="align-self:flex-start;padding:12px 22px;border-radius:9px;background:linear-gradient(135deg,#c9a84c,#8a6420);color:#fff;font-size:13px;font-weight:600;letter-spacing:0.04em;text-decoration:none;">partnerships@nova-swing.com</a>
+          </div>
+
+          <!-- Join the team -->
+          <div id="join" style="background:#071a22;padding:38px 32px;display:flex;flex-direction:column;">
+            <div style="width:40px;height:40px;border-radius:11px;background:rgba(87,176,124,0.12);border:1px solid rgba(87,176,124,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:22px;">🌱</div>
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;margin:0 0 10px;">Join the team</h3>
+            <p style="font-size:14px;line-height:1.65;color:rgba(255,255,255,0.55);margin:0 0 26px;flex:1;">Coaches, engineers, and golf-obsessed builders — we're assembling the founding team. If you want to build this, tell us why.</p>
+            <a href="mailto:careers@nova-swing.com" style="align-self:flex-start;padding:12px 22px;border-radius:9px;border:1px solid rgba(87,176,124,0.4);color:#9fe0bb;font-size:13px;font-weight:500;letter-spacing:0.04em;text-decoration:none;">careers@nova-swing.com</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ACCESS -->
+    <section id="access" data-screen-label="Early Access" style="padding:40px 24px 100px;">
+      <div style="max-width:860px;margin:0 auto;">
+        <div data-reveal="" style="padding:64px 60px;border-radius:28px;background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.3);backdrop-filter:blur(32px);text-align:center;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#c9a84c,transparent);"></div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,52px);font-weight:300;line-height:1.15;margin-bottom:20px;">We're not open yet.<br><em style="font-style:italic;color:#e8c97a;">A few people will be.</em></div>
+          <p style="font-size:16px;color:rgba(255,255,255,0.55);line-height:1.75;max-width:560px;margin:0 auto 44px;">Nova Swing launches to a closed group first. Founding members get locked-in rates, first access to every new feature, and direct input into what gets built next. The cohort is capped so every member gets the attention the product is designed to deliver.</p>
+          <div style="max-width:380px;margin:0 auto 12px;background:rgba(255,255,255,0.05);border-radius:100px;height:6px;overflow:hidden;"><div style="height:100%;border-radius:100px;background:linear-gradient(90deg,#8a6420,#e8c97a);width:{{ fillWidth }};"></div></div>
+          <p style="font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:0.08em;margin:0 0 36px;"><strong style="color:#e8c97a;font-weight:500;">{{ spotsClaimed }} of {{ spotsTotal }}</strong> founding spots claimed</p>
+          <a href="#waitlist" style="display:inline-block;padding:16px 40px;border-radius:10px;background:linear-gradient(135deg,#c9a84c,#8a6420);color:#fff;font-size:14px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;">Request Access →</a>
+          <p style="font-size:12px;color:rgba(255,255,255,0.2);margin:20px 0 0;letter-spacing:0.04em;">Access is reviewed. Not everyone who applies gets in — yet.</p>
+          <div style="display:flex;align-items:center;justify-content:center;gap:32px;margin-top:56px;flex-wrap:wrap;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><span style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:#e8c97a;line-height:1;">400+</span><span style="font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:0.10em;text-transform:uppercase;">On the waitlist</span></div>
+            <div style="width:1px;height:40px;background:rgba(255,255,255,0.08);"></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><span style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:#e8c97a;line-height:1;">4 strokes</span><span style="font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:0.10em;text-transform:uppercase;">Avg. drop in 60 days</span></div>
+            <div style="width:1px;height:40px;background:rgba(255,255,255,0.08);"></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><span style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:#e8c97a;line-height:1;">{{ spotsLeft }}</span><span style="font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:0.10em;text-transform:uppercase;">Founding spots remaining</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section data-screen-label="Final CTA" style="padding:60px 24px 120px;text-align:center;">
+      <div data-reveal="" style="max-width:780px;margin:0 auto;padding:80px 60px;border-radius:32px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(32px);position:relative;overflow:hidden;">
+        <div style="position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,0.08) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;"></div>
+        <p style="font-size:11px;letter-spacing:0.20em;text-transform:uppercase;color:#c9a84c;margin:0 0 16px;position:relative;">{{ spotsLeft }} spots remaining</p>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(34px,5vw,58px);font-weight:300;line-height:1.1;margin:0 0 16px;position:relative;">The first cohort fills<br><em style="font-style:italic;color:#c9a84c;">before we announce.</em></h2>
+        <p style="font-size:15px;color:rgba(255,255,255,0.55);max-width:440px;margin:0 auto 36px;line-height:1.7;position:relative;">Leave your email. If you're a fit for the founding cohort, you'll hear from us before anyone else does.</p>
+        <div style="display:flex;gap:12px;max-width:460px;margin:0 auto;flex-wrap:wrap;justify-content:center;position:relative;">
+          <input ref="{{ ctaRef }}" placeholder="Your email address" style="flex:1;min-width:220px;padding:16px 18px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:#fff;font-size:14px;font-family:'Hanken Grotesk',sans-serif;outline:none;box-sizing:border-box;">
+          <button onClick="{{ ctaSubmit }}" style="padding:16px 28px;border-radius:10px;background:linear-gradient(135deg,#c9a84c,#8a6420);border:none;color:#fff;font-size:14px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap;">Join Now →</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer style="position:relative;z-index:1;background:#040a0e;border-top:1px solid rgba(201,168,76,0.25);padding:36px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+    <a href="#" style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;letter-spacing:0.10em;color:#fff;text-decoration:none;display:flex;align-items:center;gap:9px;"><span style="width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,#c9a84c,#8a6420);display:inline-flex;align-items:center;justify-content:center;font-size:12px;">⛳</span><span style="color:#57b07c;">Nova</span><span style="color:#c9a84c;">Swing</span></a>
+    <p style="font-size:12px;font-weight:600;color:#d9cfa6;margin:0;display:flex;align-items:center;gap:6px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;border:1px solid rgba(217,207,166,0.6);font-size:7px;letter-spacing:0;line-height:1;">TM</span>2026 Nova Swing By A.G (Proprietor) · Made in India 🇮🇳</p>
+    <div style="display:flex;gap:24px;"><a href="mailto:hello@nova-swing.com" style="font-size:12px;font-weight:700;color:#e8c97a;text-decoration:none;">hello@nova-swing.com</a><a href="#" style="font-size:12px;font-weight:700;color:#e8c97a;text-decoration:none;">Privacy</a><a href="#" style="font-size:12px;font-weight:700;color:#e8c97a;text-decoration:none;">Terms</a></div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;spotsClaimed&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:73,&quot;min&quot;:0,&quot;max&quot;:100,&quot;tsType&quot;:&quot;number&quot;},&quot;spotsTotal&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:100,&quot;min&quot;:1,&quot;max&quot;:500,&quot;tsType&quot;:&quot;number&quot;}}">
+class Component extends DCLogic {
+  state = { heroDone: false };
+  nameRef = React.createRef();
+  emailRef = React.createRef();
+  ctaRef = React.createRef();
+  toastRef = React.createRef();
+  ballRef = React.createRef();
+
+  componentDidMount() {
+    const ball = this.ballRef.current;
+    const update = () => {
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - window.innerHeight;
+      const p = max > 0 ? Math.min(1, Math.max(0, (window.scrollY || doc.scrollTop) / max)) : 0;
+      const top = 70, bottom = window.innerHeight - 80;
+      const y = top + (bottom - top) * p;
+      if (ball) {
+        ball.style.top = y + 'px';
+        ball.style.transform = 'translate(-50%,-50%) rotate(' + (p * 900) + 'deg)';
+      }
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    const els = Array.from(document.querySelectorAll('[data-reveal]'));
+    els.forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(26px)';
+      el.style.transition = 'opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1)';
+    });
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'none';
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    els.forEach(el => io.observe(el));
+  }
+
+  isEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e || ''); }
+
+  showToast(msg) {
+    const t = this.toastRef.current;
+    if (!t) return;
+    t.textContent = msg;
+    t.style.transform = 'translateX(-50%) translateY(0)';
+    t.style.opacity = '1';
+    clearTimeout(this._tt);
+    this._tt = setTimeout(() => {
+      t.style.opacity = '0';
+      t.style.transform = 'translateX(-50%) translateY(80px)';
+    }, 4200);
+  }
+
+  heroSubmit = () => {
+    const email = (this.emailRef.current && this.emailRef.current.value || '').trim();
+    if (!this.isEmail(email)) { this.showToast('Enter a valid email to apply.'); return; }
+    this.setState({ heroDone: true });
+    this.showToast("✦ Application received — we'll be in touch before launch.");
+  };
+
+  ctaSubmit = () => {
+    const el = this.ctaRef.current;
+    const email = (el && el.value || '').trim();
+    if (!this.isEmail(email)) { this.showToast('Enter a valid email.'); return; }
+    if (el) el.value = '';
+    this.showToast("✦ You're on the list — we'll be in touch before launch.");
+  };
+
+  renderVals() {
+    const claimed = this.props.spotsClaimed ?? 73;
+    const total = this.props.spotsTotal ?? 100;
+    const left = Math.max(0, total - claimed);
+    const fill = Math.round(Math.min(100, claimed / total * 100)) + '%';
+    return {
+      heroDone: this.state.heroDone,
+      showForm: !this.state.heroDone,
+      nameRef: this.nameRef,
+      emailRef: this.emailRef,
+      ctaRef: this.ctaRef,
+      toastRef: this.toastRef,
+      ballRef: this.ballRef,
+      heroSubmit: this.heroSubmit,
+      ctaSubmit: this.ctaSubmit,
+      spotsClaimed: claimed,
+      spotsTotal: total,
+      spotsLeft: left,
+      fillWidth: fill,
+    };
+  }
+}
+</script>
+</body>
+</html>
