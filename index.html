@@ -115,57 +115,7 @@
         India's first AI golf coaching platform. Upload your swing and see exactly what's costing you strokes — instantly. Built for Indian golfers, on the courses you actually play.
       </p>
 
-      <!-- waitlist card -->
-      <div id="waitlist"
-   style="width:100%;max-width:520px;background:rgba(255,255,255,0.04);backdrop-filter:blur(32px);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:36px;margin:0 auto;overflow:hidden;">
-  <h3 style="font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:400;margin:0 0 6px;color:#fff;">Request Founding Access</h3>
-  <p style="font-size:13px;color:rgba(255,255,255,0.4);margin:0 0 16px;">Spots are limited. We review every application.</p>
-  <iframe
-    aria-label="Request Founding Access"
-    frameborder="0"
-    allow="geolocation;"
-    src="https://forms.zohopublic.in/abhinavguptanova1/form/RequestFoundingAccess/formperma/Bxnwj-q_XwBaMlVV0qeqTbzphagO_VnGLO1U1J4dcaM"
-    style="width:100%;height:420px;border:none;background:transparent;">
-  </iframe>
-  <script type="text/javascript">
-(function() {
-  try {
-    var zf_frame = document.querySelector('#waitlist iframe');
-    var ifrmSrc = zf_frame.src;
-    if (!((new RegExp("[?&]referrername=")).test(ifrmSrc))) {
-      var rfr = window.location.href;
-      try {
-        rfr = window.self !== window.top ?
-          window.top.location.href :
-          (/^https?:\/\/[\w.-]+\.[a-zA-Z]{2,}/i.test(rfr) ? rfr : "");
-      } catch (e) {}
-      if (rfr && rfr !== "") {
-        if (rfr.length > 1800) {
-          var queryIndex = rfr.indexOf('?');
-          if (queryIndex > -1) { rfr = rfr.substring(0, queryIndex); }
-          if (rfr.length > 1800) { rfr = rfr.substring(0, 1800); }
-        }
-        ifrmSrc += ((ifrmSrc.indexOf('?') > 0) ? '&' : '?') + 'referrername=' + encodeURIComponent(rfr);
-      }
-    }
-    if (zf_frame.src !== ifrmSrc) { zf_frame.src = ifrmSrc; }
-  } catch(e) {}
-})();
-</script>
-  <p style="font-size:11px;color:rgba(255,255,255,0.25);text-align:center;margin:12px 0 0;letter-spacing:0.04em;">Applications are reviewed. Not everyone gets in on the first round.</p>
-</div>
-        <!--
-        <sc-if value="{{ heroDone }}" hint-placeholder-val="{{ false }}">
-          <div style="text-align:center;padding:18px 0;animation:ns-fadeup .5s ease both;">
-            <div style="font-size:40px;margin-bottom:12px;">🏌️</div>
-            <h4 style="font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:400;margin:0 0 6px;color:#e8c97a;">Application received.</h4>
-            <p style="font-size:13px;color:rgba(255,255,255,0.4);margin:0;max-width:340px;margin:0 auto;line-height:1.6;">We review every request. If you're selected for the founding cohort, you'll hear from us within 48 hours.</p>
-          </div>
-        </sc-if>
-      </div>
-    Dead Block from forms update--> 
-    </section>
-
+      
     <!-- STATS -->
     <div style="padding:0 24px;margin-top:8px;">
       <div data-reveal="" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;max-width:1100px;margin:0 auto;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;">
@@ -226,6 +176,47 @@
       </div>
     </section>
 
+    <!-- WAITLIST -->
+    <section style="padding:60px 24px;text-align:center;">
+      <div id="waitlist" style="width:100%;max-width:520px;background:rgba(255,255,255,0.04);backdrop-filter:blur(32px);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:36px;margin:0 auto;overflow:hidden;">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:400;margin:0 0 6px;color:#fff;">Request Founding Access</h3>
+        <p style="font-size:13px;color:rgba(255,255,255,0.4);margin:0 0 16px;">Spots are limited. We review every application.</p>
+        <iframe
+          aria-label="Request Founding Access"
+          frameborder="0"
+          allow="geolocation;"
+          src="https://forms.zohopublic.in/abhinavguptanova1/form/RequestFoundingAccess/formperma/Bxnwj-q_XwBaMlVV0qeqTbzphagO_VnGLO1U1J4dcaM"
+          style="width:100%;height:420px;border:none;background:transparent;">
+        </iframe>
+        <script type="text/javascript">
+        (function() {
+          try {
+            var zf_frame = document.querySelector('#waitlist iframe');
+            var ifrmSrc = zf_frame.src;
+            if (!((new RegExp("[?&]referrername=")).test(ifrmSrc))) {
+              var rfr = window.location.href;
+              try {
+                rfr = window.self !== window.top ?
+                  window.top.location.href :
+                  (/^https?:\/\/[\w.-]+\.[a-zA-Z]{2,}/i.test(rfr) ? rfr : "");
+              } catch (e) {}
+              if (rfr && rfr !== "") {
+                if (rfr.length > 1800) {
+                  var queryIndex = rfr.indexOf('?');
+                  if (queryIndex > -1) { rfr = rfr.substring(0, queryIndex); }
+                  if (rfr.length > 1800) { rfr = rfr.substring(0, 1800); }
+                }
+                ifrmSrc += ((ifrmSrc.indexOf('?') > 0) ? '&' : '?') + 'referrername=' + encodeURIComponent(rfr);
+              }
+            }
+            if (zf_frame.src !== ifrmSrc) { zf_frame.src = ifrmSrc; }
+          } catch(e) {}
+        })();
+        </script>
+        <p style="font-size:11px;color:rgba(255,255,255,0.25);text-align:center;margin:12px 0 0;letter-spacing:0.04em;">Applications are reviewed. Not everyone gets in on the first round.</p>
+      </div>
+    </section>
+
     <!-- BE PART OF IT — referrals · partnerships · join -->
     <section data-screen-label="Be part of it" style="padding:40px 24px 60px;">
       <div style="max-width:1100px;margin:0 auto;">
@@ -240,7 +231,7 @@
             <div style="width:40px;height:40px;border-radius:11px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.28);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:22px;">⛳</div>
             <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;margin:0 0 10px;">Refer a golfer</h3>
             <p style="font-size:14px;line-height:1.65;color:rgba(255,255,255,0.55);margin:0 0 26px;flex:1;">Know someone whose game deserves this? Send them in. Founding members move up the queue for every golfer they bring.</p>
-            <a href="#waitlist" style="align-self:flex-start;padding:12px 22px;border-radius:9px;border:1px solid rgba(255,255,255,0.16);color:#fff;font-size:13px;font-weight:500;letter-spacing:0.04em;text-decoration:none;">Refer &amp; move up →</a>
+            <a href="https://wa.me/?text=Got%20early%20access%20to%20Nova%20Swing%20%E2%80%94%20India%27s%20first%20AI%20golf%20coaching%20platform.%20Founding%20spots%20are%20limited%3A%20https%3A%2F%2Fnova-swing.com" target="_blank" style="align-self:flex-start;padding:12px 22px;border-radius:9px;border:1px solid rgba(255,255,255,0.16);color:#fff;font-size:13px;font-weight:500;letter-spacing:0.04em;text-decoration:none;">Share on WhatsApp →</a>
           </div>
 
           <!-- Partner with us -->
