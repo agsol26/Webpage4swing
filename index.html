@@ -116,18 +116,44 @@
       </p>
 
       <!-- waitlist card -->
-      <div id="waitlist" style="width:100%;max-width:520px;background:rgba(255,255,255,0.04);backdrop-filter:blur(32px);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:36px;margin:0 auto;">
-        <sc-if value="{{ showForm }}" hint-placeholder-val="{{ true }}">
-          <div>
-            <h3 style="font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:400;margin:0 0 6px;">Request Founding Access</h3>
-            <p style="font-size:13px;color:rgba(255,255,255,0.4);margin:0 0 24px;">{{ spotsLeft }} spots left in the first cohort. We review every application.</p>
-            <div style="display:flex;flex-direction:column;gap:12px;">
-              <input ref="{{ nameRef }}" placeholder="Full name" style="width:100%;padding:14px 18px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:#fff;font-size:14px;font-family:'Hanken Grotesk',sans-serif;outline:none;box-sizing:border-box;">
-              <input ref="{{ emailRef }}" placeholder="Email address" style="width:100%;padding:14px 18px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:#fff;font-size:14px;font-family:'Hanken Grotesk',sans-serif;outline:none;box-sizing:border-box;">
-              <button onClick="{{ heroSubmit }}" style="width:100%;padding:16px;border-radius:10px;background:linear-gradient(135deg,#c9a84c,#8a6420);border:none;color:#fff;font-family:'Hanken Grotesk',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;margin-top:4px;">Apply for Access →</button>
-            </div>
-            <p style="font-size:11px;color:rgba(255,255,255,0.25);text-align:center;margin:14px 0 0;letter-spacing:0.04em;">Applications are reviewed. Not everyone gets in on the first round.</p>
-          </div>
+      <div id="waitlist"
+   style="width:100%;max-width:520px;background:rgba(255,255,255,0.04);backdrop-filter:blur(32px);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:36px;margin:0 auto;overflow:hidden;">
+  <h3 style="font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:400;margin:0 0 6px;color:#fff;">Request Founding Access</h3>
+  <p style="font-size:13px;color:rgba(255,255,255,0.4);margin:0 0 16px;">Spots are limited. We review every application.</p>
+  <iframe
+    aria-label="Request Founding Access"
+    frameborder="0"
+    allow="geolocation;"
+    src="https://forms.zohopublic.in/abhinavguptanova1/form/RequestFoundingAccess/formperma/Bxnwj-q_XwBaMlVV0qeqTbzphagO_VnGLO1U1J4dcaM"
+    style="width:100%;height:420px;border:none;background:transparent;">
+  </iframe>
+  <script type="text/javascript">
+(function() {
+  try {
+    var zf_frame = document.querySelector('#waitlist iframe');
+    var ifrmSrc = zf_frame.src;
+    if (!((new RegExp("[?&]referrername=")).test(ifrmSrc))) {
+      var rfr = window.location.href;
+      try {
+        rfr = window.self !== window.top ?
+          window.top.location.href :
+          (/^https?:\/\/[\w.-]+\.[a-zA-Z]{2,}/i.test(rfr) ? rfr : "");
+      } catch (e) {}
+      if (rfr && rfr !== "") {
+        if (rfr.length > 1800) {
+          var queryIndex = rfr.indexOf('?');
+          if (queryIndex > -1) { rfr = rfr.substring(0, queryIndex); }
+          if (rfr.length > 1800) { rfr = rfr.substring(0, 1800); }
+        }
+        ifrmSrc += ((ifrmSrc.indexOf('?') > 0) ? '&' : '?') + 'referrername=' + encodeURIComponent(rfr);
+      }
+    }
+    if (zf_frame.src !== ifrmSrc) { zf_frame.src = ifrmSrc; }
+  } catch(e) {}
+})();
+</script>
+  <p style="font-size:11px;color:rgba(255,255,255,0.25);text-align:center;margin:12px 0 0;letter-spacing:0.04em;">Applications are reviewed. Not everyone gets in on the first round.</p>
+</div>
         </sc-if>
         <sc-if value="{{ heroDone }}" hint-placeholder-val="{{ false }}">
           <div style="text-align:center;padding:18px 0;animation:ns-fadeup .5s ease both;">
