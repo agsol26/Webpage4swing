@@ -340,20 +340,39 @@ class Component extends DCLogic {
     }, 4200);
   }
 
-  heroSubmit = () => {
+  submitToZoho = async (name, email) => {
+    const formData = new FormData();
+    formData.append('SingleLine', name);
+    formData.append('Email', email);
+    formData.append('formPerma', '-Pjp9bUwUwutBEuxmUdTnyF1iv9RMIOFmOar07cgRbE');
+    try {
+      await fetch('https://forms.zohopublic.in/abhinavguptanova1/form/RequestFoundingAccess/formperma/-Pjp9bUwUwutBEuxmUdTnyF1iv9RMIOFmOar07cgRbE/htmlRecords/submit', {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData
+      });
+    } catch(e) {}
+  };
+
+  heroSubmit = async () => {
+    const name = (this.nameRef.current && this.nameRef.current.value || '').trim();
     const email = (this.emailRef.current && this.emailRef.current.value || '').trim();
+    if (!name) { this.showToast('Please enter your name.'); return; }
     if (!this.isEmail(email)) { this.showToast('Enter a valid email to apply.'); return; }
+    await this.submitToZoho(name, email);
     this.setState({ heroDone: true });
     this.showToast("✦ Application received — we'll be in touch before launch.");
   };
 
-  ctaSubmit = () => {
+  ctaSubmit = async () => {
     const el = this.ctaRef.current;
     const email = (el && el.value || '').trim();
     if (!this.isEmail(email)) { this.showToast('Enter a valid email.'); return; }
+    await this.submitToZoho('', email);
     if (el) el.value = '';
     this.showToast("✦ You're on the list — we'll be in touch before launch.");
   };
+  
 
   renderVals() {
     const claimed = this.props.spotsClaimed ?? 73;
