@@ -4,6 +4,48 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-15ZEMX4MJM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-15ZEMX4MJM');
+</script>
+
+<!-- Cookie Consent -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+<script>
+  window.addEventListener("load", function(){
+    window.cookieconsent.initialise({
+      palette: {
+        popup: { background: "#0a0a0a", text: "#c8a96e" },
+        button: { background: "#c8a96e", text: "#0a0a0a" }
+      },
+      theme: "classic",
+      position: "bottom",
+      content: {
+        message: "Nova Swing uses cookies to analyse site traffic and improve your experience.",
+        dismiss: "Accept",
+        deny: "Decline",
+        link: "Learn more",
+        href: "/privacy.html"
+      },
+      type: "opt-out",
+      onInitialise: function(status) {
+        if(status === cookieconsent.status.deny) {
+          window['ga-disable-G-15ZEMX4MJM'] = true;
+        }
+      },
+      onStatusChange: function(status) {
+        if(status === cookieconsent.status.deny) {
+          window['ga-disable-G-15ZEMX4MJM'] = true;
+        }
+      }
+    })
+  });
+</script>
 </head>
 <body>
 <x-dc>
